@@ -14,9 +14,9 @@ during the day.
 */
 
 // the number of seconds in a day, to avoid magic numbers
-static var secsPerDay : int = 24*60*60;
-static var dayStart   : int = 0;
-static var nightStart : int = 18*60*60;
+static var secsPerDay : int = 24*60*60; // 24 hours in a day
+static var dayStart   : int =  6*60*60; // day starts at 6am
+static var nightStart : int =        0; // night starts at 12am
 
 var daySpeed   : int = 1200;
 var nightSpeed : int = daySpeed*3; 
@@ -24,22 +24,26 @@ var nightSpeed : int = daySpeed*3;
 // track the day, and the number of seconds that have passed for the current day
 var day  : int;
 var time : int;
+var daytime : boolean;
 
 function Start () {
   day  = 1;
-  time = 0;
+  time = dayStart;
+  daytime = true;
 }
 
 function Update () {
   nightSpeed = daySpeed*3;
   // get the real time that has passed, aplly multiple and add to decond count.
-  // go at day speed
-  if (time < nightStart) {
-    time += Time.deltaTime*daySpeed;
-  }
   // go at night speed
-  else {
+  if (time >= nightStart && time < dayStart) {
     time += Time.deltaTime*nightSpeed;
+    daytime = false;
+  }
+  // go at day speed
+  else {
+    time += Time.deltaTime*daySpeed;
+    daytime = true;
   }
   // if we have overflowed into a new day, increment the day counter
   if (time > secsPerDay) {
