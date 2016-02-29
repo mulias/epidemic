@@ -24,16 +24,19 @@ var nightSpeed : int = daySpeed*3;
 // track the day, and the number of seconds that have passed for the current day
 var day  : int;
 var time : int;
-var daytime : boolean;
+var clockStr : String;
+var daytime  : boolean;
 
 function Start () {
   day  = 1;
   time = dayStart;
+  clockStr = clockString();
   daytime = true;
 }
 
 function Update () {
   nightSpeed = daySpeed*3;
+  clockStr = clockString();
   // get the real time that has passed, aplly multiple and add to decond count.
   // go at night speed
   if (time >= nightStart && time < dayStart) {
@@ -52,17 +55,18 @@ function Update () {
   }
 }
 
-function timeString () : String {
+private function clockString () : String {
+  var res : String;
   var minute = Mathf.FloorToInt(time/60)   % 60;
   var hour   = Mathf.FloorToInt(time/3600) % 24;
-  var minuteStr = minute.ToString();
-  var hourStr = hour.ToString();
-  if (minute < 10) { minuteStr = "0" + minuteStr; }
-  if (hour   < 10) { hourStr   = "0" + hourStr; }
-  return hourStr + ":" + minuteStr;
+  var minuteStr = minute.ToString(":00");
+  if (hour ==  0)     { return "12" + minuteStr + " AM"; }
+  if (hour == 12)     { return "12" + minuteStr + " PM"; }
+  else if (hour < 12) { return hour.ToString("00") + minuteStr + " AM"; }
+  else                { return (hour % 12).ToString("00") + minuteStr + " PM"; }
 }
 
-// input an hour (0-23) and a minute (0-59), return the corresponding frame
+// input an hour (0-23) and a minute (0-59), return corresponding game second
 function timeInSeconds (hour : int, min : int) {
    return (hour*3600) + (min*60);
 }
