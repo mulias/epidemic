@@ -8,7 +8,7 @@ enum Health {susceptible, infected, recovered};
 // event we use the field schedule.next.
 class EventList {
   var start : int;
-  var loc   : String;
+  var loc   : Location;
   var next  : EventList;
   function EventList(start, loc, next) {
     this.start = start;
@@ -23,7 +23,7 @@ var health     : Health;
 var schedule   : EventList;
 var clock      : WorldClock;
 var interactionCount : int;
-var infectedCount	 : int;
+var infectedCount	   : int;
 
 // initial status: the object starts as a clone of the person prefab, so we
 // need to change it to have a more useful object name, and unique
@@ -60,13 +60,6 @@ function Update () {
   }
 }
 
-function generateName () : String {
-  // right now each person's name is a string of numbers. Take a random decimal,
-  // turn it into the string, and then remove the leading "0." decimal point.
-  // do something better later?
-  return Random.Range(.001,.999).ToString().Substring(2);    
-}
-
 /*
 Let's talk about time. There are 24 hours in a day, but we don't want to watch
 the part where everyone is sleeping, so let's make the game run from 6am to
@@ -75,59 +68,48 @@ To start everyone at the right place at the beginning of the game, we use a
 special start event.
 */
 
-/*
-function randomTime (baseHour : int, epsilon) : int {
-  if (baseHour <= 1) {
-
-  }
-  else {
-    baseHour--;
-  }
-}
-*/
-
 function generateSchedule () : EventList {
   // Alias because lazy. The clock runs off game frames, so we want to convert
   // more readable time to the corresponding frame.
   var tis = clock.timeInSeconds;
   // we build a circular list. We can't add the last line, which ties the end 
   // back to the beginning, until after eventCycle is defined, so it's null.
-  var eventCycle = new EventList(tis( 7,20), "Home 1", 
-                   new EventList(tis( 8, 0), "Travel",
-                   new EventList(tis( 8,20), "Work 1",
-                   new EventList(tis(16, 0), "Travel",
-                   new EventList(tis(16,14), "Home 1",
-                   new EventList(tis(22,00), "Sleep", null))))));
+  var eventCycle = new EventList(tis( 7,20), getLocation("Home 1"), 
+                   new EventList(tis( 8, 0), getLocation("Travel"),
+                   new EventList(tis( 8,20), getLocation("Work 1"),
+                   new EventList(tis(16, 0), getLocation("Travel"),
+                   new EventList(tis(16,14), getLocation("Home 1"),
+                   new EventList(tis(22,00), getLocation("Sleep"), null))))));
   // link the last event (going to sleep) to the first event (waking up)
   eventCycle.next.next.next.next.next.next = eventCycle;
   // Special start point so everyone starts at 6am on the first day. We use this
-  // event once on the first frame to get into the event cycle, then never use
-  // this event again.
-  return new EventList(tis( 6, 0), "Sleep",  eventCycle);
+  // event once on the first frame to get into the event cycle, then never again.
+  return new EventList(tis( 6, 0), getLocation("Sleep"),  eventCycle);
+}
+
+// helper function to look up a location object from its name
+function getLocation(loc : String) {
+  return GameObject.Find("/Locations/"+loc).GetComponent(Location); 
 }
 
 function leaveScheduledLocation() {
-  GameObject.Find("/Locations/"+schedule.loc).GetComponent(Location).checkOut(health); 
+  schedule.loc.checkOut(health); 
   if(health == Health.susceptible && Random.Range(0,interactionCount) < infectedCount){
   	  health = Health.infected;
   	  Debug.Log("person1 is sick!");
   	  }
   interactionCount = 0;
   infectedCount = 0;
-  //if(health == Health.susceptible && infectedCount/interactionCount*
 }
 
 function goToScheduledLocation() {
-  var loc = GameObject.Find("Locations/"+schedule.loc).GetComponent(Location);
-  loc.checkIn(health);
-  Debug.Log("person1 travels to "+schedule.loc+" at time "+clock.timeString());
-  interactionCount += loc.population;
-  infectedCount += loc.infected;
-  //GameObject.Find("Locations/"+schedule.loc).GetComponent(LocationStatus).check_Health(health);
+  schedule.loc.checkIn(health);
+  Debug.Log("person1 travels to "+schedule.loc.name+" at time "+clock.clockStr);
+  interactionCount += schedule.loc.population;
+  infectedCount += schedule.loc.infected;
 }
 
 function checkHealth () {
-  var loc = GameObject.Find("Locations/"+schedule.loc).GetComponent(Location);
-  interactionCount += loc.deltaArrive;
-  infectedCount += loc.deltaInfected;
+  interactionCount += schedule.loc.deltaArrive;
+  infectedCount += schedule.loc.deltaInfected;
 }
