@@ -96,7 +96,7 @@ function leaveScheduledLocation() {
   schedule.loc.checkOut(health); 
   if(health == Health.susceptible && Random.Range(0,interactionCount) < infectedCount){
   	  health = Health.infected;
-  	  Debug.Log("person1 is sick!");
+  	  Debug.Log(this.name + " is sick!");
   	  }
   interactionCount = 0;
   infectedCount = 0;
@@ -104,7 +104,7 @@ function leaveScheduledLocation() {
 
 function goToScheduledLocation() {
   schedule.loc.checkIn(health);
-  Debug.Log("person1 travels to "+schedule.loc.name+" at time "+clock.clockStr);
+  Debug.Log(this.name+" travels to "+schedule.loc.name+" at time "+clock.clockStr);
   interactionCount += schedule.loc.population;
   infectedCount += schedule.loc.infected;
 }
