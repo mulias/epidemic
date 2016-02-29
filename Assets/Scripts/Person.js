@@ -72,19 +72,28 @@ function generateSchedule () : EventList {
   // Alias because lazy. The clock runs off game frames, so we want to convert
   // more readable time to the corresponding frame.
   var tis = clock.timeInSeconds;
+  var range = Random.Range;
   // we build a circular list. We can't add the last line, which ties the end 
   // back to the beginning, until after eventCycle is defined, so it's null.
-  var eventCycle = new EventList(tis( 7,20), getLocation("Home 1"), 
-                   new EventList(tis( 8, 0), getLocation("Travel"),
-                   new EventList(tis( 8,20), getLocation("Work 1"),
-                   new EventList(tis(16, 0), getLocation("Travel"),
-                   new EventList(tis(16,14), getLocation("Home 1"),
-                   new EventList(tis(22,00), getLocation("Sleep"), null))))));
+  var wakeTime       = clock.timeInSeconds(range(6,9),range(0,59));   // 6 to 9:59
+  var leaveHomeTime  = wakeTime + range(30,91)*60;                    // 6:30 to 11:30
+  var travelTime     = range(15,45)*60;                               // 15 to 45 min
+  var arriveWorkTime = leaveHomeTime + travelTime;                    // 6:45 to 12:15
+  var leaveWorkTime  = clock.timeInSeconds(range(15,18),range(0,30)); // 3 to 6:30
+  var arriveHomeTime = leaveWorkTime + travelTime;                    // 3:15 to 7:15
+  var sleepTime      = clock.timeInSeconds(range(20,23),range(0,59)); // 8 to 11:59
+  var eventCycle = 
+    new EventList(wakeTime,       getLocation("Home 1"), 
+    new EventList(leaveHomeTime,  getLocation("Travel"),
+    new EventList(arriveWorkTime, getLocation("Work 1"),
+    new EventList(leaveWorkTime,  getLocation("Travel"),
+    new EventList(arriveHomeTime, getLocation("Home 1"),
+    new EventList(sleepTime,      getLocation("Sleep"), null))))));
   // link the last event (going to sleep) to the first event (waking up)
   eventCycle.next.next.next.next.next.next = eventCycle;
   // Special start point so everyone starts at 6am on the first day. We use this
   // event once on the first frame to get into the event cycle, then never again.
-  return new EventList(tis( 6, 0), getLocation("Sleep"),  eventCycle);
+  return new EventList(tis(6,0), getLocation("Sleep"),  eventCycle);
 }
 
 // helper function to look up a location object from its name
