@@ -22,15 +22,20 @@ class EventList {
 var health     : Health;
 var schedule   : EventList;
 var clock      : WorldClock;
+var homeStr    : String;
+var workStr    : String;
 var interactionCount : int;
 var infectedCount	   : int;
 
 // initial status: the object starts as a clone of the person prefab, so we
-// need to change it to have a more useful object name, and unique
-// characteristics.
+// need to change it to have a unique schedule, home, and work.
 function Start () {
-  // set status and go to first location
+  // set starting health
   health   = Health.susceptible;
+  // set home, work, and schedule
+  var locManager = GameObject.Find("Locations").GetComponent(LocationSpawner); 
+  homeStr  = locManager.assignHome();
+  workStr  = locManager.assignWork();
   schedule = generateSchedule();
   clock    = GameObject.Find("World Clock").GetComponent(WorldClock);
   interactionCount = 0;
@@ -60,14 +65,9 @@ function Update () {
   }
 }
 
-/*
-Let's talk about time. There are 24 hours in a day, but we don't want to watch
-the part where everyone is sleeping, so let's make the game run from 6am to
-midnight. That means 18 hours per game day, 6 hours that magically aren't there.
-To start everyone at the right place at the beginning of the game, we use a 
-special start event.
-*/
-
+// Each person should have a semi-random schedule. Right now that means everyone
+// goes between work and home, but they leave/arrive at different times and
+// go to different houses and work places. 
 function generateSchedule () : EventList {
   // Alias because lazy. The clock runs off game frames, so we want to convert
   // more readable time to the corresponding frame.
@@ -83,11 +83,11 @@ function generateSchedule () : EventList {
   var arriveHomeTime = leaveWorkTime + travelTime;                    // 3:15 to 7:15
   var sleepTime      = clock.timeInSeconds(range(20,23),range(0,59)); // 8 to 11:59
   var eventCycle = 
-    new EventList(wakeTime,       getLocation("Home 1"), 
+    new EventList(wakeTime,       getLocation(homeStr), 
     new EventList(leaveHomeTime,  getLocation("Travel"),
-    new EventList(arriveWorkTime, getLocation("Work 1"),
+    new EventList(arriveWorkTime, getLocation(workStr),
     new EventList(leaveWorkTime,  getLocation("Travel"),
-    new EventList(arriveHomeTime, getLocation("Home 1"),
+    new EventList(arriveHomeTime, getLocation(homeStr),
     new EventList(sleepTime,      getLocation("Sleep"), null))))));
   // link the last event (going to sleep) to the first event (waking up)
   eventCycle.next.next.next.next.next.next = eventCycle;
