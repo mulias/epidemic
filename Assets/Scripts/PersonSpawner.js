@@ -12,10 +12,12 @@ function Awake() {
 	for (i = 1; i < population; i++) {
 		person = Instantiate(personPrefab);
     person.name = "Person " + i;
+    person.index = i;
     person.transform.parent = this.transform;  
 	}
   // the prefab person turns into the last person
   personPrefab.name = "Person " + population;
+  personPrefab.index = population;
   personPrefab.transform.parent = this.transform;  
   personPrefab.transform.SetAsLastSibling();
 }

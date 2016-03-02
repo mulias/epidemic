@@ -1,3 +1,4 @@
+var index : int; // each location has an index between 1 and number of locations
 var population  : int;
 var susceptible : int;
 var infected   : int;

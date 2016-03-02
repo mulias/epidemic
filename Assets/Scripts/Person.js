@@ -19,6 +19,7 @@ class EventList {
 
 // everyone has a health status, a current event schedule, and a link to the
 // single wold clock that syncs everyone together.
+var index : int; // each person has an index between 1 and number of people
 var health     : Health;
 var schedule   : EventList;
 var clock      : WorldClock;

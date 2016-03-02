@@ -1,11 +1,12 @@
 ﻿// the location object to be cloned
 var locationPrefab : Location;
 
-var numHomes      = 10;
-var numWorks      = 10;
-var numSchools    =  3;
-var numHospitals  =  2;
-var locationTotal = numHomes + numWorks + numSchools + numHospitals;
+var numHomes      = 6;
+var numWorks      = 3;
+var numSchools    = 1;
+var numHospitals  = 1;
+
+private var locationCount;
 
 private var assignedHomes = 0;
 private var assignedWorks = 0;
@@ -14,6 +15,7 @@ private var assignedWorks = 0;
 // all the locations in Awake() so that if a script's Start() function tries to
 // find a location, that location will already exist.
 function Awake () {
+  locationCount = 1;
   // general locations
   makeLocations(numHomes, "Home");
   makeLocations(numWorks, "Work");
@@ -23,10 +25,12 @@ function Awake () {
   var loc : Location;
   loc = Instantiate(locationPrefab);
   loc.name = "Sleep";
+  loc.index = locationCount++;
   loc.transform.parent = this.transform;  
   loc.transform.SetAsFirstSibling();
   // make the prefab the travel location
   locationPrefab.name = "Travel";
+  locationPrefab.index = locationCount++;
   locationPrefab.transform.parent = this.transform;
 }
 
@@ -36,7 +40,8 @@ function makeLocations(num : int, name : String) {
   for (i = 1; i <= num; i++) {
     loc = Instantiate(locationPrefab);
     loc.name = name + " " + i;
-    loc.transform.parent = this.transform;  
+    loc.index = locationCount++;
+    loc.transform.parent = this.transform;
   }
 }
 
