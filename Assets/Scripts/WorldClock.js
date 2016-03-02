@@ -32,6 +32,7 @@ function Start () {
   time = dayStart;
   clockStr = clockString();
   daytime = true;
+  paused = false;
 }
 
 function Update () {
@@ -69,4 +70,31 @@ private function clockString () : String {
 // input an hour (0-23) and a minute (0-59), return corresponding game second
 function timeInSeconds (hour : int, min : int) {
    return (hour*3600) + (min*60);
+}
+
+function doubleTime () {
+  daySpeed = daySpeed*2;
+  nightSpeed = daySpeed*3; 
+}
+
+function halfTime () {
+  daySpeed = daySpeed/2;
+  nightSpeed = daySpeed*3; 
+}
+
+private var paused : boolean;
+private var savedSpeed : int;
+
+function pauseTime () {
+  if (paused) {
+    daySpeed = savedSpeed;
+    nightSpeed = daySpeed*3; 
+    paused = false;
+  }
+  else {
+    savedSpeed = daySpeed;
+    daySpeed = 0;
+    nightSpeed = 0;
+    paused = true;
+  }
 }

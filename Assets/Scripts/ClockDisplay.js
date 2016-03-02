@@ -5,5 +5,6 @@ function Start () {
 }
 
 function OnGUI () {
-  GUI.Label (Rect (25, 25, 100, 30), clock.clockStr);
+  var timeText = String.Format("Day {0}\n{1}", clock.day, clock.clockStr);
+  GUI.Label (Rect (25, 25, 100, 50), timeText);
 }

@@ -8,7 +8,7 @@ var deltaLeave	: int;
 var deltaInfected: int;
 var deltaInfectedLeave: int;
 
-function Start () {
+function Awake () {
   population  = 0;
   susceptible = 0;
   infected    = 0;
@@ -19,15 +19,15 @@ function Start () {
   deltaInfectedLeave = 0;
 }
 
-function Update () {
-population += deltaArrive;
-population -= deltaLeave;
-infected += deltaInfected;
-infected -= deltaInfectedLeave;
-deltaArrive =0;
-deltaLeave=0;
-deltaInfected=0;
-deltaInfectedLeave=0;
+function LateUpdate () {
+  population += deltaArrive;
+  population -= deltaLeave;
+  infected += deltaInfected;
+  infected -= deltaInfectedLeave;
+  deltaArrive =0;
+  deltaLeave=0;
+  deltaInfected=0;
+  deltaInfectedLeave=0;
 }
 
 function checkIn (health : Health) {
