@@ -5,8 +5,8 @@ function Start () {
 }
 
 function OnGUI () {
-  var localStyle = new GUIStyle(GUI.skin.label);
-  localStyle.normal.textColor = Color.black;
   var statusText = String.Format ("{0}: {1}", person.name, person.schedule.loc.name);
-  GUI.Label (Rect (500, (person.index * 20), 1000, 300), statusText, localStyle);
+  var health = String.Format("{0}: {1}", person.name, person.health);
+  GUI.Label (Rect (350, (person.index * 25), 1000, 300), statusText);
+  GUI.Label (Rect (550, (person.index * 25), 1000, 300), health);
 }
