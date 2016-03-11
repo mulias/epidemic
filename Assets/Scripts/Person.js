@@ -1,4 +1,23 @@
-﻿// health status
+﻿/*
+Person.js
+
+A specific person. Each person has a schedule object, which tells them where 
+they are and where they should go next.
+
+Update() – person checks if they are in the right place. If they are, check if 
+  they have interacted with new (potentially sick) people. If they need to go to 
+  a new place, go to that place.
+
+LeaveScheduledLocation() – Leave the current location, calls the location’s 
+  checkOut() method.
+
+scheduleNextLocation() – change the schedule, time to move on.
+
+goToScheduledLocation() – Go to the current location, call the location’s 
+  checkIn() method. Trigger animation to move from current position to location.
+*/
+
+// health status
 enum Health {susceptible, infected, recovered};
 
 // schedule for each part of the day
@@ -59,7 +78,7 @@ function Update () {
   if(clock.time >= windowStart && 
      (clock.time <= windowEnd || windowStart >= windowEnd)) {
     leaveScheduledLocation();
-    schedule = schedule.next;
+    scheduleNextLocation();
     goToScheduledLocation();
   }
   // stay and update health
@@ -104,7 +123,7 @@ function getLocation(loc : String) {
   return GameObject.Find("/Locations/"+loc).GetComponent(Location); 
 }
 
-function leaveScheduledLocation() {
+function leaveScheduledLocation () {
   schedule.loc.checkOut(health); 
   if(health == Health.susceptible && (Random.Range(0,infectionCoeff*interactionCount)) < infectedCount){
   	  health = Health.infected;
@@ -118,7 +137,11 @@ function leaveScheduledLocation() {
   infectedCount = 0;
 }
 
-function goToScheduledLocation() {
+function scheduleNextLocation () {
+  schedule = schedule.next;
+}
+
+function goToScheduledLocation () {
   schedule.loc.checkIn(health);
   Debug.Log(this.name+" travels to "+schedule.loc.name+" at time "+clock.clockStr);
   interactionCount += schedule.loc.population;

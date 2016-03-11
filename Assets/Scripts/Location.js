@@ -1,3 +1,19 @@
+/*
+Location.js
+
+A specific location.
+
+name – The name string for the location, like “School 2”.
+
+checkIn(health) – Person calls when they arrive at the location. Lets the 
+  location know that a new person has arrived, and if that person is healthy or 
+  not.
+
+checkOut() – Person calls when they leave the location. First lets the location 
+  know that a person has left. Then checks to see if time at that location has 
+  made the person more or less sick.
+*/
+
 var index : int; // each location has an index between 1 and number of locations
 var population  : int;
 var susceptible : int;

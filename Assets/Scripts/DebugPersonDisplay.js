@@ -1,4 +1,11 @@
-﻿var person : Person;
+﻿/*
+DebugPersonDisplay.js
+
+Status string for each person, displayed in a column. Only meant for simple
+debugging.
+*/
+
+var person : Person;
 
 function Start () {
   person = this.GetComponent.<Person>();

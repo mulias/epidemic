@@ -1,4 +1,11 @@
-﻿// the location object to be cloned
+﻿/*
+LocationSpawner.js
+
+Generates all of the location objects. The spawner makes locations, and then 
+does nothing while the game runs.
+*/
+
+// the location object to be cloned
 var locationPrefab : Location;
 
 // all possible kinds of locations 

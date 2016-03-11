@@ -1,4 +1,11 @@
-﻿var clock : WorldClock;
+﻿/*
+WorldClockDisplay.js
+
+Updates the HUD clock text every frame with the current value of 
+WorldClock.clockStr.
+*/
+
+var clock : WorldClock;
 var MyFont : Font;
 
 function Start () {

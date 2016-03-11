@@ -1,4 +1,11 @@
-﻿var loc : Location;
+﻿/*
+DebugLocationDisplay.js
+
+Status string for each location, displayed in a column. Only meant for simple
+debugging.
+*/
+
+var loc : Location;
 
 function Start () {
   loc = this.GetComponent.<Location>();

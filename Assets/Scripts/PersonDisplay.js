@@ -1,4 +1,10 @@
-﻿var person : Person;
+﻿/*
+PersonDisplay.js
+
+Displays people like the debug version. Will be replaced by sprites.
+*/
+
+var person : Person;
 
 function Start () {
   person = this.GetComponent.<Person>();

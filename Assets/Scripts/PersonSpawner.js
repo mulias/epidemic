@@ -1,3 +1,11 @@
+/*
+PersonSpawner.js
+
+Generates all the person objects.
+
+The spawner makes people, and then does nothing while the game runs.
+*/
+
 var personPrefab : Person;
 
 var population = 18;

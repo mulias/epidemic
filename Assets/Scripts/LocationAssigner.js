@@ -1,4 +1,16 @@
-﻿var spawner : LocationSpawner;
+﻿/*
+LocationAssigner.js
+
+Tells each person where their typical home and work is. 
+
+assignHome() Returns string corresponding to the name of a location object which
+  is either a home that is empty (no owners), or a random home.
+
+assignWork() Returns string corresponding to the name of a location object which
+  is either a work that is empty (no workers), or a random work.
+*/
+
+var spawner : LocationSpawner;
 private var randomHomesOrder;
 private var randomWorksOrder;
 
@@ -16,7 +28,7 @@ function Awake () {
 }
 
 // make an array of ints [a, a+1, a+2 ... b]
-function intsRange (a : int, b : int) {
+private function intsRange (a : int, b : int) {
   var res : Array = [];
   for (var i = a; i <= b; i++) {
     res.Push(i);
@@ -25,7 +37,7 @@ function intsRange (a : int, b : int) {
 }
 
 // Durstenfeld shuffle 
-function shuffle (array) {
+private function shuffle (array) {
     for (var i = array.length - 1; i > 0; i--) {
         var j = Random.Range(0, i + 1);
         var temp = array[i];

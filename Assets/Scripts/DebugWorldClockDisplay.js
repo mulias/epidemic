@@ -1,4 +1,10 @@
-﻿var clock : WorldClock;
+﻿/*
+DebugWorldClockDisplay.js
+
+Updated time string. Only meant for simple debugging.
+*/
+
+var clock : WorldClock;
 var MyFont : Font;
 
 function Start () {

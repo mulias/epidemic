@@ -1,4 +1,10 @@
-﻿var loc : Location;
+﻿/*
+LocationDisplay.js
+
+Displays locations like the debug version. Will be replaced by sprites.
+*/
+
+var loc : Location;
 
 function Start () {
   loc = this.GetComponent.<Location>();
