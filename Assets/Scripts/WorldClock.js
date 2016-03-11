@@ -1,4 +1,17 @@
 ﻿/*
+WorldClock.js
+
+Keep track of in game time.
+
+day is an integer for the current day.
+
+time is the current second of the game day. There are 24*60*60=86400 seconds in 
+  a day. When the day counter rolls over time resets to 0 seconds.
+
+clockStr is a string in the form ‘12:34 PM’ that  is updated every game second.
+*/
+
+/*
 The game clock runs at a multiple of real time. Because night time is boring,
 the hours from 12am to 6am can be set to run faster than the rest of the day.
 
@@ -14,9 +27,9 @@ during the day.
 */
 
 // the number of seconds in a day, to avoid magic numbers
-static var secsPerDay : int = 24*60*60; // 24 hours in a day
-static var dayStart   : int =  6*60*60; // day starts at 6am
-static var nightStart : int =        0; // night starts at 12am
+private var secsPerDay : int = 24*60*60; // 24 hours in a day
+private var dayStart   : int =  6*60*60; // day starts at 6am
+private var nightStart : int =        0; // night starts at 12am
 
 var daySpeed   : int = 1200;
 var nightSpeed : int = daySpeed*3; 
@@ -25,20 +38,17 @@ var nightSpeed : int = daySpeed*3;
 var day  : int;
 var time : int;
 var clockStr : String;
-var daytime  : boolean;
 
 function Start () {
   day  = 1;
   time = dayStart;
   clockStr = clockString();
-  daytime = true;
-  paused = false;
 }
 
 function Update () {
   nightSpeed = daySpeed*3;
   clockStr = clockString();
-  // get the real time that has passed, aplly multiple and add to decond count.
+  // get the real time that has passed, aplly multiple and add to second count.
   // go at night speed
   if (time >= nightStart && time < dayStart) {
     time += Time.deltaTime*nightSpeed;
@@ -70,31 +80,4 @@ private function clockString () : String {
 // input an hour (0-23) and a minute (0-59), return corresponding game second
 function timeInSeconds (hour : int, min : int) {
    return (hour*3600) + (min*60);
-}
-
-function doubleTime () {
-  daySpeed = daySpeed*2;
-  nightSpeed = daySpeed*3; 
-}
-
-function halfTime () {
-  daySpeed = daySpeed/2;
-  nightSpeed = daySpeed*3; 
-}
-
-private var paused : boolean;
-private var savedSpeed : int;
-
-function pauseTime () {
-  if (paused) {
-    daySpeed = savedSpeed;
-    nightSpeed = daySpeed*3; 
-    paused = false;
-  }
-  else {
-    savedSpeed = daySpeed;
-    daySpeed = 0;
-    nightSpeed = 0;
-    paused = true;
-  }
 }
