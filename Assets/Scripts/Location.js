@@ -19,8 +19,6 @@ function Awake () {
   deltaLeave  = 0;
   deltaInfected = 0;
   deltaInfectedLeave = 0;
-  //infectionCoefficient = 2;
-  //recoveryCoefficient = 3;
 }
 
 function LateUpdate () {

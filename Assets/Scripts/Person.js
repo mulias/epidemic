@@ -34,12 +34,11 @@ var recoveryCoeff : float;
 // initial status: the object starts as a clone of the person prefab, so we
 // need to change it to have a unique schedule, home, and work.
 function Start () {
-  // set starting health -- now done within PersonSpawner
-
+  // name, health, index are all set by PersonSpawner
   // set home, work, and schedule
-  var locManager = GameObject.Find("Locations").GetComponent(LocationSpawner); 
-  homeStr  = locManager.assignHome();
-  workStr  = locManager.assignWork();
+  var locs = GameObject.Find("Locations").GetComponent(LocationAssigner); 
+  homeStr  = locs.assignHome();
+  workStr  = locs.assignWork();
   schedule = generateSchedule();
   clock    = GameObject.Find("World Clock").GetComponent(WorldClock);
   interactionCount = 0;
