@@ -10,11 +10,12 @@ function Awake() {
   var i : int;
   var j : int;
   var person : Person;
-  // make the first population-1 people who are initially susceptible
-	for (i = 1; i <= (population-initialInfected); i++) {
-		person = Instantiate(personPrefab);
-    	person.name = "Person " + i;
-    	person.index = i;
+
+  // make the first population-1 people
+	for (i = 1; i < population; i++) {
+		person = Instantiate(personPrefab, new Vector3(i * 1.0F, 0, 0), Quaternion.identity);
+        person.name = "Person " + i;
+        person.index = i;
     	person.health = Health.susceptible;
     	person.transform.parent = this.transform;  
 	}
