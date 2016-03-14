@@ -22,10 +22,10 @@ function Awake() {
   // make the first population-1 people
 	for (i = 1; i < population; i++) {
 		person = Instantiate(personPrefab, new Vector3(i * 1.0F, 0, 0), Quaternion.identity);
-        person.name = "Person " + i;
-        person.index = i;
-    	person.health = Health.susceptible;
-    	person.transform.parent = this.transform;  
+    person.name = "Person " + i;
+    person.index = i;
+    person.health = Health.susceptible;
+    person.transform.parent = this.transform;  
 	}
 
 // make the first population-1 people who are initially infected

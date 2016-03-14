@@ -17,14 +17,8 @@ goToScheduledLocation() – Go to the current location, call the location’s
   checkIn() method. Trigger animation to move from current position to location.
 */
 
-// health status
-enum Health {susceptible, infected, recovered};
-
-// schedule for each part of the day
-// Sorry this turned out goofy. The schedule is a linked list, where the last
-// element connects back to the first. We keep track of the current schedule
-// event with the schedule var, and when it's time to move on to the next
-// event we use the field schedule.next.
+// The schedule telling a person where to be at each part of the day. Schedule 
+// is a linked list, where the last element connects back to the first. We keep 
 class EventList {
   var start : int;
   var loc   : Location;
@@ -38,19 +32,19 @@ class EventList {
 
 // everyone has a health status, a current event schedule, and a link to the
 // single wold clock that syncs everyone together.
-var index : int; // each person has an index between 1 and number of people
 var health     : Health;
 var schedule   : EventList;
 var clock      : WorldClock;
 var homeStr    : String;
 var workStr    : String;
+
+var index      : int; // each person has an index between 1 and number of people
 var interactionCount : int;
 var infectedCount	   : int;
-var infected	: int;
-var ratio	: float;
-
-var infectionCoeff : float;
-var recoveryCoeff : float;
+var infected	       : int;
+var ratio	           : float;
+var infectionCoeff   : float;
+var recoveryCoeff    : float;
 
 // initial status: the object starts as a clone of the person prefab, so we
 // need to change it to have a unique schedule, home, and work.
