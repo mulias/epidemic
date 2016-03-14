@@ -24,10 +24,10 @@ private var locationCount;
 function Awake () {
   locationCount = 0;
   // general locations
-  makeLocations(numHomes, LocKind.Home);
-  makeLocations(numWorks, LocKind.Work);
-  makeLocations(numSchools, LocKind.School);
-  makeLocations(numHospitals, LocKind.Hospital);
+  makeLocations(numHomes, LocKind.Home, 5.7);
+  makeLocations(numWorks, LocKind.Work, 2.5);
+  makeLocations(numSchools, LocKind.School, -1);
+  makeLocations(numHospitals, LocKind.Hospital, -4.1);
   // special locations
   var loc : Location;
   loc = Instantiate(locationPrefab);
@@ -45,13 +45,27 @@ function Awake () {
   locationPrefab.transform.parent = this.transform;
 }
 
-function makeLocations(num : int, kind : LocKind) {
+function makeLocations(num : int, kind : LocKind, ypos : int) {
   var i : int;
   var loc : Location;
   for (i = 1; i <= num; i++) {
-    loc = Instantiate(locationPrefab);
+    loc = Instantiate(locationPrefab, new Vector3(((i * 6.0F) - 15), ypos, 0), Quaternion.identity);
     loc.name = kind + " " + i;
     loc.index = ++locationCount;
+
+    if(name == "Home"){
+   		loc.infectionCoefficient = 5;
+   		loc.recoveryCoefficient = 2;}
+   	else if (name == "Work"){
+   		loc.infectionCoefficient = 5;
+   		loc.recoveryCoefficient = 2;}
+   	else if (name == "School"){
+   		loc.infectionCoefficient = 5;
+   		loc.recoveryCoefficient = 2;}
+   	else if (name == "Hospital"){
+   		loc.infectionCoefficient = 1000;
+   		loc.recoveryCoefficient = 4;}
+
     loc.transform.parent = this.transform;
     switch (kind) {
       case LocKind.Home:
