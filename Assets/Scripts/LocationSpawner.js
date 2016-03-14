@@ -2,7 +2,7 @@
 var locationPrefab : Location;
 
 var numHomes      = 6;
-var numWorks      = 3;
+var numWorks      = 1;
 var numSchools    = 1;
 var numHospitals  = 1;
 
@@ -24,13 +24,19 @@ function Awake () {
   // special locations
   var loc : Location;
   loc = Instantiate(locationPrefab);
+
   loc.name = "Sleep";
   loc.index = locationCount++;
+  loc.infectionCoefficient = 1000;
+  loc.recoveryCoefficient = 2;
   loc.transform.parent = this.transform;  
   loc.transform.SetAsFirstSibling();
+
   // make the prefab the travel location
   locationPrefab.name = "Travel";
   locationPrefab.index = locationCount++;
+  locationPrefab.infectionCoefficient = 5;
+  locationPrefab.recoveryCoefficient = 2;
   locationPrefab.transform.parent = this.transform;
 }
 
@@ -41,6 +47,20 @@ function makeLocations(num : int, name : String, ypos : int) {
     loc = Instantiate(locationPrefab, new Vector3(((i * 6.0F) - 15), ypos, 0), Quaternion.identity);
     loc.name = name + " " + i;
     loc.index = locationCount++;
+
+    if(name == "Home"){
+   		loc.infectionCoefficient = 5;
+   		loc.recoveryCoefficient = 2;}
+   	else if (name == "Work"){
+   		loc.infectionCoefficient = 5;
+   		loc.recoveryCoefficient = 2;}
+   	else if (name == "School"){
+   		loc.infectionCoefficient = 5;
+   		loc.recoveryCoefficient = 2;}
+   	else if (name == "Hospital"){
+   		loc.infectionCoefficient = 1000;
+   		loc.recoveryCoefficient = 4;}
+
     loc.transform.parent = this.transform;
   }
 }
@@ -68,3 +88,4 @@ function assignWork () : String {
     return "Work " + Random.Range(1,numWorks);
   }
 }
+

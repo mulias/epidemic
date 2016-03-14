@@ -28,11 +28,14 @@ var workStr    : String;
 var interactionCount : int;
 var infectedCount	   : int;
 
+var infectionCoeff : float;
+var recoveryCoeff : float;
+
 // initial status: the object starts as a clone of the person prefab, so we
 // need to change it to have a unique schedule, home, and work.
 function Start () {
-  // set starting health
-  health   = Health.susceptible;
+  // set starting health -- now done within PersonSpawner
+
   // set home, work, and schedule
   var locManager = GameObject.Find("Locations").GetComponent(LocationSpawner); 
   homeStr  = locManager.assignHome();
@@ -104,8 +107,12 @@ function getLocation(loc : String) {
 
 function leaveScheduledLocation() {
   schedule.loc.checkOut(health); 
-  if(health == Health.susceptible && Random.Range(0,interactionCount) < infectedCount){
+  if(health == Health.susceptible && (Random.Range(0,infectionCoeff*interactionCount)) < infectedCount){
   	  health = Health.infected;
+  	  Debug.Log(this.name + " is sick!");
+  	  }
+  if(health == Health.infected && Random.Range(0,100) < recoveryCoeff){
+  	  health = Health.recovered;
   	  Debug.Log(this.name + " is sick!");
   	  }
   interactionCount = 0;
@@ -117,6 +124,8 @@ function goToScheduledLocation() {
   Debug.Log(this.name+" travels to "+schedule.loc.name+" at time "+clock.clockStr);
   interactionCount += schedule.loc.population;
   infectedCount += schedule.loc.infected;
+  infectionCoeff = schedule.loc.infectionCoefficient;
+  recoveryCoeff = schedule.loc.recoveryCoefficient;
 }
 
 function checkHealth () {

@@ -7,6 +7,8 @@ var deltaArrive	: int;
 var deltaLeave	: int;
 var deltaInfected: int;
 var deltaInfectedLeave: int;
+var infectionCoefficient: float;
+var recoveryCoefficient: float;
 
 function Awake () {
   population  = 0;
@@ -17,6 +19,8 @@ function Awake () {
   deltaLeave  = 0;
   deltaInfected = 0;
   deltaInfectedLeave = 0;
+  //infectionCoefficient = 2;
+  //recoveryCoefficient = 3;
 }
 
 function LateUpdate () {
