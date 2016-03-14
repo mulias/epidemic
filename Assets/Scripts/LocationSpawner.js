@@ -1,4 +1,5 @@
 ﻿// the location object to be cloned
+enum Health {susceptible, infected, recovered};
 var locationPrefab : Location;
 
 var numHomes      = 6;
