@@ -1,4 +1,4 @@
-﻿/*
+/*
 LocationSpawner.js
 
 Generates all of the location objects. The spawner makes locations, and then 
@@ -6,6 +6,8 @@ does nothing while the game runs.
 */
 
 // the location object to be cloned
+enum Health {susceptible, infected, recovered};
+
 var locationPrefab : Location;
 
 // all possible kinds of locations 

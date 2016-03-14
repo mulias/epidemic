@@ -1,4 +1,4 @@
-﻿/*
+/*
 Person.js
 
 A specific person. Each person has a schedule object, which tells them where 
@@ -46,6 +46,8 @@ var homeStr    : String;
 var workStr    : String;
 var interactionCount : int;
 var infectedCount	   : int;
+var infected	: int;
+var ratio	: float;
 
 var infectionCoeff : float;
 var recoveryCoeff : float;
@@ -123,16 +125,25 @@ function getLocation(loc : String) {
   return GameObject.Find("/Locations/"+loc).GetComponent(Location); 
 }
 
-function leaveScheduledLocation () {
-  schedule.loc.checkOut(health); 
-  if(health == Health.susceptible && (Random.Range(0,infectionCoeff*interactionCount)) < infectedCount){
-  	  health = Health.infected;
-  	  Debug.Log(this.name + " is sick!");
-  	  }
-  if(health == Health.infected && Random.Range(0,100) < recoveryCoeff){
-  	  health = Health.recovered;
-  	  Debug.Log(this.name + " is sick!");
-  	  }
+function leaveScheduledLocation() {
+
+  if (interactionCount == 0) 	{ ratio = 0; }
+  else							{ ratio = infectedCount/interactionCount; }
+
+  infected = schedule.loc.checkOut(health, ratio); 
+
+  if (infected==1)		{health = Health.infected;}
+  else if (infected==2) {health = Health.recovered;}
+
+  //if(health == Health.susceptible && (Random.Range(0,infectionCoeff*interactionCount)) < infectedCount){
+  	  //health = Health.infected;
+  	  //Debug.Log(this.name + " is sick!");
+  	  //}
+  //if(health == Health.infected && Random.Range(0,100) < recoveryCoeff){
+  	  //health = Health.recovered;
+  	  //Debug.Log(this.name + " is sick!");
+  	  //}
+
   interactionCount = 0;
   infectedCount = 0;
 }
