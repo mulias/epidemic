@@ -17,10 +17,10 @@ private var assignedWorks = 0;
 function Awake () {
   locationCount = 1;
   // general locations
-  makeLocations(numHomes, "Home");
-  makeLocations(numWorks, "Work");
-  makeLocations(numSchools, "School");
-  makeLocations(numHospitals, "Hospital");
+  makeLocations(numHomes, "Home", 5.7);
+  makeLocations(numWorks, "Work", 2.5);
+  makeLocations(numSchools, "School", -1);
+  makeLocations(numHospitals, "Hospital", -4.1);
   // special locations
   var loc : Location;
   loc = Instantiate(locationPrefab);
@@ -34,11 +34,11 @@ function Awake () {
   locationPrefab.transform.parent = this.transform;
 }
 
-function makeLocations(num : int, name : String) {
+function makeLocations(num : int, name : String, ypos : int) {
   var i : int;
   var loc : Location;
   for (i = 1; i <= num; i++) {
-    loc = Instantiate(locationPrefab);
+    loc = Instantiate(locationPrefab, new Vector3(((i * 6.0F) - 15), ypos, 0), Quaternion.identity);
     loc.name = name + " " + i;
     loc.index = locationCount++;
     loc.transform.parent = this.transform;
