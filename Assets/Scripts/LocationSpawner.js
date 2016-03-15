@@ -28,24 +28,13 @@ function Awake () {
   var loc : Location;
   loc = Instantiate(locationPrefab);
   loc.name = "Sleep";
-<<<<<<< HEAD
   loc.index = locationCount++;
-=======
-  loc.index = ++locationCount;
-  loc.infectionCoefficient = 1000;
-  loc.recoveryCoefficient = 2;
->>>>>>> upstream/master
+
   loc.transform.parent = this.transform;  
   loc.transform.SetAsFirstSibling();
   // make the prefab the travel location
   locationPrefab.name = "Travel";
-<<<<<<< HEAD
-  locationPrefab.index = locationCount++;
-=======
   locationPrefab.index = ++locationCount;
-  locationPrefab.infectionCoefficient = 5;
-  locationPrefab.recoveryCoefficient = 2;
->>>>>>> upstream/master
   locationPrefab.transform.parent = this.transform;
 }
 
@@ -54,36 +43,33 @@ function makeLocations(num : int, kind : LocKind, ypos : int) {
   var loc : Location;
   for (i = 1; i <= num; i++) {
     loc = Instantiate(locationPrefab, new Vector3(((i * 6.0F) - 15), ypos, 0), Quaternion.identity);
-<<<<<<< HEAD
     loc.name = name + " " + i;
     loc.index = locationCount++;
-=======
     loc.name = kind + " " + i;
     loc.index = ++locationCount;
 
-    if(name == "Home"){
-   		loc.infectionCoefficient = 5;
-   		loc.recoveryCoefficient = 2;}
-   	else if (name == "Work"){
-   		loc.infectionCoefficient = 5;
-   		loc.recoveryCoefficient = 2;}
-   	else if (name == "School"){
-   		loc.infectionCoefficient = 5;
-   		loc.recoveryCoefficient = 2;}
-   	else if (name == "Hospital"){
-   		loc.infectionCoefficient = 1000;
-   		loc.recoveryCoefficient = 4;}
+    //if(name == "Home"){
+   		//loc.infectionCoefficient = 5;
+   		//loc.recoveryCoefficient = 2;}
+   	//else if (name == "Work"){
+   		//loc.infectionCoefficient = 5;
+   		//loc.recoveryCoefficient = 2;}
+   	//else if (name == "School"){
+   		//loc.infectionCoefficient = 5;
+   		//loc.recoveryCoefficient = 2;}
+   	//else if (name == "Hospital"){
+   		//loc.infectionCoefficient = 1000;
+   		//loc.recoveryCoefficient = 4;}
 
->>>>>>> upstream/master
     loc.transform.parent = this.transform;
-    switch (kind) {
+    /*switch (kind) {
       case LocKind.Home:
         loc.infectionCoefficient = 5;
-   		  loc.recoveryCoefficient = 2;
+   		loc.recoveryCoefficient = 2;
         break;
       case LocKind.Work:
         loc.infectionCoefficient = 5;
-   		  loc.recoveryCoefficient = 2;
+   		loc.recoveryCoefficient = 2;
         break;
       case LocKind.School:
         loc.infectionCoefficient = 5;
@@ -96,7 +82,7 @@ function makeLocations(num : int, kind : LocKind, ypos : int) {
       default:
         Debug.LogError("Invalid location kind, can't finish instantiation");
         break;
-    }
+    }*/
   }
 }
 
