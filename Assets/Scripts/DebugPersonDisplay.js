@@ -1,7 +1,8 @@
 ﻿/*
-PersonDisplay.js
+DebugPersonDisplay.js
 
-Displays people like the debug version. Will be replaced by sprites.
+Status string for each person, displayed in a column. Only meant for simple
+debugging.
 */
 
 var person : Person;
@@ -11,9 +12,7 @@ function Start () {
 }
 
 function OnGUI () {
-  var localStyle = new GUIStyle(GUI.skin.label);
-  localStyle.normal.textColor = Color.black;
   var statusText = String.Format ("{0} \t\t at {1,-20} \t feeling {2}", 
                                   person.name, person.schedule.loc.name, person.health);
-  GUI.Label (Rect (300, (person.index * 20), 1000, 300), statusText, localStyle);
+  GUI.Label (Rect (300, (person.index * 20), 1000, 300), statusText);
 }

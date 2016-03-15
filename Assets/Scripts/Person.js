@@ -1,10 +1,24 @@
-﻿// health status
+/*
+Person.js
 
-// schedule for each part of the day
-// Sorry this turned out goofy. The schedule is a linked list, where the last
-// element connects back to the first. We keep track of the current schedule
-// event with the schedule var, and when it's time to move on to the next
-// event we use the field schedule.next.
+A specific person. Each person has a schedule object, which tells them where 
+they are and where they should go next.
+
+Update() – person checks if they are in the right place. If they are, check if 
+  they have interacted with new (potentially sick) people. If they need to go to 
+  a new place, go to that place.
+
+LeaveScheduledLocation() – Leave the current location, calls the location’s 
+  checkOut() method.
+
+scheduleNextLocation() – change the schedule, time to move on.
+
+goToScheduledLocation() – Go to the current location, call the location’s 
+  checkIn() method. Trigger animation to move from current position to location.
+*/
+
+// The schedule telling a person where to be at each part of the day. Schedule 
+// is a linked list, where the last element connects back to the first. We keep 
 class EventList {
   var start : int;
   var loc   : Location;
@@ -18,29 +32,28 @@ class EventList {
 
 // everyone has a health status, a current event schedule, and a link to the
 // single wold clock that syncs everyone together.
-var index : int; // each person has an index between 1 and number of people
 var health     : Health;
 var schedule   : EventList;
 var clock      : WorldClock;
 var homeStr    : String;
 var workStr    : String;
+
+var index      : int; // each person has an index between 1 and number of people
 var interactionCount : int;
 var infectedCount	   : int;
-var infected	: int;
-var ratio	: float;
-
-var infectionCoeff : float;
-var recoveryCoeff : float;
+var infected	       : int;
+var ratio	           : float;
+var infectionCoeff   : float;
+var recoveryCoeff    : float;
 
 // initial status: the object starts as a clone of the person prefab, so we
 // need to change it to have a unique schedule, home, and work.
 function Start () {
-  // set starting health -- now done within PersonSpawner
-
+  // name, health, index are all set by PersonSpawner
   // set home, work, and schedule
-  var locManager = GameObject.Find("Locations").GetComponent(LocationSpawner); 
-  homeStr  = locManager.assignHome();
-  workStr  = locManager.assignWork();
+  var locs = GameObject.Find("Locations").GetComponent(LocationAssigner); 
+  homeStr  = locs.assignHome();
+  workStr  = locs.assignWork();
   schedule = generateSchedule();
   clock    = GameObject.Find("World Clock").GetComponent(WorldClock);
   interactionCount = 0;
@@ -61,7 +74,7 @@ function Update () {
   if(clock.time >= windowStart && 
      (clock.time <= windowEnd || windowStart >= windowEnd)) {
     leaveScheduledLocation();
-    schedule = schedule.next;
+    scheduleNextLocation();
     goToScheduledLocation();
   }
   // stay and update health
@@ -120,7 +133,11 @@ function leaveScheduledLocation() {
   infectedCount = 0;
 }
 
-function goToScheduledLocation() {
+function scheduleNextLocation () {
+  schedule = schedule.next;
+}
+
+function goToScheduledLocation () {
   schedule.loc.checkIn(health);
   Debug.Log(this.name+" travels to "+schedule.loc.name+" at time "+clock.clockStr);
   interactionCount += schedule.loc.population;
