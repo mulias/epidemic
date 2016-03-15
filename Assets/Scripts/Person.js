@@ -108,22 +108,13 @@ function getLocation(loc : String) {
 
 function leaveScheduledLocation() {
 
-  if (interactionCount == 0) 	{ ratio = 0; }
-  else							{ ratio = infectedCount/interactionCount; }
+  if (interactionCount) 	{ ratio = infectedCount*1.0f / interactionCount;}  //multiple by 1.0f to convert infectedCount to a float
+  else						{ ratio = 0;}
 
   infected = schedule.loc.checkOut(health, ratio); 
 
   if (infected==1)		{health = Health.infected;}
   else if (infected==2) {health = Health.recovered;}
-
-  //if(health == Health.susceptible && (Random.Range(0,infectionCoeff*interactionCount)) < infectedCount){
-  	  //health = Health.infected;
-  	  //Debug.Log(this.name + " is sick!");
-  	  //}
-  //if(health == Health.infected && Random.Range(0,100) < recoveryCoeff){
-  	  //health = Health.recovered;
-  	  //Debug.Log(this.name + " is sick!");
-  	  //}
 
   interactionCount = 0;
   infectedCount = 0;
