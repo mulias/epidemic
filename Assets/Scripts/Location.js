@@ -15,23 +15,19 @@ checkOut() – Person calls when they leave the location. First lets the locatio
 */
 
 var index : int; // each location has an index between 1 and number of locations
+var kind : LocKind;
 var population  : int;
 var susceptible : int;
-var infected   : int;
+var infected    : int;
 var recovered   : int;
 var deltaArrive	: int;
 var deltaLeave	: int;
 var deltaInfected: int;
 var deltaInfectedLeave: int;
-var loc : Location;
 var infectionCoefficient: float;
 var recoveryCoefficient: float;
 var ratioSick : float;
 var probability: float;
-
-function Start () {
-	loc = this.GetComponent.<Location>();
-}
 
 function Awake () {
   population  = 0;
@@ -57,34 +53,55 @@ function LateUpdate () {
 
 function checkIn (health : Health) {
   deltaArrive++;
-   //alter location and global health variables
-  if (health == Health.susceptible) { susceptible++; }
-  else if (health == Health.infected) { deltaInfected++; }
+  //alter location and global health variables
+  if (health == Health.susceptible)    { susceptible++; }
+  else if (health == Health.infected)  { deltaInfected++; }
   else if (health == Health.recovered) { recovered++; }
 }
 
 function checkOut (health : Health, ratioSick : float) {
   deltaLeave++;
   //alter location and global health variables
-  if (health == Health.susceptible) 	{ susceptible--; }
+  if (health == Health.susceptible) 	  { susceptible--; }
   else if (health == Health.infected) 	{ deltaInfectedLeave++; }
   else if (health == Health.recovered) 	{ recovered--; }
 
   //get sickness coeffifient
-  if (loc.name == "Sleep") 			{ probability = sleepHealthPolicy(health, ratioSick); }
-  else if (loc.name == "Travel") 	{ probability = travelHealthPolicy(health, ratioSick); }
-  //else if (loc.name == "Home") 		{ probability = homeHealthPolicy(health, ratioSick); }
-  else if (loc.name.StartsWith("Home")) 		{ probability = homeHealthPolicy(health, ratioSick); }
-  else if (loc.name.StartsWith("Work")) 		{ probability = workHealthPolicy(health, ratioSick); }
-  else if (loc.name.StartsWith("School"))	 	{ probability = schoolHealthPolicy(health, ratioSick); }
-  else if (loc.name.StartsWith("Hospital")) 	{ probability = hospitalHealthPolicy(health, ratioSick); }
+  switch (this.kind) {
+    case LocKind.Sleep:
+      probability = sleepHealthPolicy(health, ratioSick); 
+      break;
+    case LocKind.Travel:
+      probability = travelHealthPolicy(health, ratioSick); 
+      break;
+    case LocKind.Home:
+      probability = homeHealthPolicy(health, ratioSick); 
+      break;
+    case LocKind.Work:
+      probability = workHealthPolicy(health, ratioSick); 
+      break;
+    case LocKind.School:
+      probability = schoolHealthPolicy(health, ratioSick); 
+      break;
+    case LocKind.Hospital:
+      probability = hospitalHealthPolicy(health, ratioSick); 
+      break;
+    default:
+      Debug.LogError("Invalid location kind, no health policy to apply.");
+      break;
+  }
 
-  Debug.Log("Ratio = " + ratioSick + " Probability = " + probability + " Location " + loc.name);
+  Debug.Log("Ratio = " + ratioSick + " Probability = " + probability + " Location " + this.name);
 
-  if (health == Health.susceptible && Random.Range(0,100)<probability*100) 	{ return 1; }
-  else if (health == Health.infected && Random.Range(0,100)<probability*100) { return 2; }
-  else 																		{ return 0; }
-
+  if (health == Health.susceptible && Random.Range(0,100)<probability*100) { 
+    return 1; 
+  }
+  else if (health == Health.infected && Random.Range(0,100)<probability*100) { 
+    return 2; 
+  }
+  else { 
+    return 0; 
+  }
 }
 
 function sleepHealthPolicy(health : Health, ratioSick : float){

@@ -9,18 +9,16 @@ The spawner makes people, and then does nothing while the game runs.
 var personPrefab : Person;
 
 var population = 18;
-var initialInfected =2;
+var initialInfected = 2;
 
 // Awake() is like Start(), but it happens before all start functions. We make 
 // all the people in Awake() so that if a script's Start() function tries to
 // find a person, that person exists.
 function Awake() {
-  var i : int;
-  var j : int;
   var person : Person;
 
   // make the first population-1 people
-	for (i = 1; i <= population-initialInfected; i++) {
+	for (var i : int = 1; i <= population-initialInfected; i++) {
 		person = Instantiate(personPrefab, new Vector3(i * 1.0F, 0, 0), Quaternion.identity);
     person.name = "Person " + i;
     person.index = i;
@@ -28,8 +26,8 @@ function Awake() {
     person.transform.parent = this.transform;  
 	}
 
-// make the first population-1 people who are initially infected
-  for (j = 1; j < initialInfected; j++) {
+// make initialInfected-1 infected people, last infected is the prefab
+  for (var j : int = 1; j < initialInfected; j++) {
 		person = Instantiate(personPrefab);
     	person.name = "Person " + (i+j-1);
     	person.index = (i+j-1);

@@ -121,12 +121,15 @@ function getLocation(loc : String) {
 
 function leaveScheduledLocation() {
 
-  if (interactionCount) 	{ ratio = infectedCount*1.0f / interactionCount;}  //multiple by 1.0f to convert infectedCount to a float
-  else						{ ratio = 0;}
+  if (interactionCount) { 
+    //multiple by 1.0f to convert infectedCount to a float
+    ratio = infectedCount*1.0f / interactionCount;
+  }
+  else { ratio = 0; }
 
   infected = schedule.loc.checkOut(health, ratio); 
 
-  if (infected==1)		{health = Health.infected;}
+  if (infected==1)		  {health = Health.infected; }
   else if (infected==2) {health = Health.recovered;}
 
   interactionCount = 0;
